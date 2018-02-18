@@ -1,0 +1,25 @@
+{
+  "name": "shop_bot",
+  "version": "1.0.0",
+  "description": "Chatbot that uses Recast AI and YaaS to provide useful shopping information.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/InnovaitonDev/shop_bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/InnovaitonDev/shop_bot/issues"
+  },
+  "homepage": "https://github.com/InnovaitonDev/shop_bot#readme",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
