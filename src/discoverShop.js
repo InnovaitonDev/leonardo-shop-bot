@@ -4,94 +4,102 @@ const YaaS = require('./yaas_api/yaas.js');
 // we don't need any scopes here
 var scopes = "";
 var yaas = new YaaS();
+var finalres = [];
+var tmp;
 
-function discoverShop(product){
+function discoverShop(products){
 	yaas.init(config.CLIENT_ID, config.CLIENT_SECRET, scopes, config.PRODUCT_ID);
-	yaas.setLanguage('kr');
+	yaas.setLanguage('ko');
 
 	return yaas.category.getCategory()
-		.then(results =. {
+		.then(results => {
 			if(results.length === 0){
 				return [{
 					type: 'quickReplies',
 					content: {
-						title: 'Sorry, but I could not find any results for your request :('
+						title: 'Sorry, but I could not find any results for your request :(',
 						buttons: [{ title: 'Start over', value: 'Start over'}],
 					},
 				}];
 			}
 
-			const cards = results.slice(0,10).map(product => ({
-				name: product.name,
-				
-			})
+			var productExist = false;
 
-			)
-		}
 
-	)
+
+			for(var category in results.body){
+				console.log('=======');
+				console.log(results.body[category].assignments);
+				if(results.body[category].name === prod){
+					productExist = true;
+					var assignments = results.body[category].assignments
+
+					console.log('PRODUCT EXISTS');
+					break;
+				}
+
+				//console.log('=======');
+				//console.log(results.body[category].name)
+
+			}
+
+			if(productExist == false){
+				console.log('No Product');
+				return [{
+					type: 'quickReplies',
+					content: {
+						title: '해당 제품은 존재하지 않습니다.',
+						buttons: [{ title: 'Start over', value: 'Start over'}],
+					},
+				}];
+			}else{
+				console.log('Yes Product');
+				for(key in assignments){
+					console.log(assignments[key].ref.id);
+
+					var rf = yaas.productdetials.getProductdetailsId(assignments[key].ref.id)
+						.then(results => {
+
+							console.log(results);
+							tmp = results.body.product.name;
+							finalres.push({name: results.body.product.name});
+							console.log(finalres);
+						});
+
+				}
+			}
+			console.log(finalres);
+			console.log(tmp);
+			// 사용자가 input한 text와 일치하는 Category 찾기
+			//if(products ===)
+			//
+
+
+			const cards = results.body.slice(0,10).map(product => ({
+				title: product.name,
+				imageUrl: product.media[0].url,
+				buttons: [
+					{
+						type: 'web_url',
+						value: 'https://www.naver.com/',
+						title: 'View More',
+					},
+				],
+			}));
+
+			//console.log(cards);
+
+			return [
+				{
+					type: 'text',
+					content: "Here's what I found for you!",
+				},
+				{ type: 'carousel', content: cards },
+			];
+	});
 }
+prod = '우유'
+discoverShop(prod)
 
 
-result2 = yaas.category.getCategory()
-	.then(response => {
-		for(var key in  response.body[0].assignments){
-			id = response.body[0].assignments[key].ref.id
-			result = yaas.productdetials.getProductdetailsId(id)
-				.then(res => console.log(res))
-				.catch(errorResponse => console.log(errorResponse));
-		}
-	}).catch(errorResponse => console.log(errorResponse));
-
-// create a new instance
-
-
-// and fill it with our config and scopes
-
-// now we can build an object that includes query parameter
-// we put the sku or product number of our product here
-//  in the end, this will be reformatted to a string included in the url
-var query = {
-	q : {
-		sku : "mil01"
-	}
-};
-
-// now, we start the request
-// we use Promise for that - they enable use to do some easy-to-read functional programming
-
-/*
-result = yaas.productdetials.getProductdetails()
-//.then(response => console.log(JSON.stringify(response.body[0].product, null, "       ")))
-.then(response => {
-	product = response.body[0].product;
-	price = response.body[0].prices;
-	console.log(JSON.stringify(response, null, "       "));
-	//console.log(JSON.stringify(prices, null, "       "));
-})
-.catch(errorResponse => console.log(errorResponse));
-*/
-
-
-
-
-//product = result.body;
-//price = result.body;
-
-// yaas.product.getProduct(theProductId)
-// yaas.cart.deleteCart(cartId)
-//
-//
-// var reqParams = {
-//     pageNumber: 1,
-//     pageSize: 10,
-//     totalCount: true
-// };
-// yaas.document.getAll(clientApplicationId, documentType, reqParams).then(
-//     function(response) {
-//         console.log('Fetched', response.data.length, 'of', response.headers['hybris-count'], 'documents.');
-//     },
-//     function(err) {
-//         console.error('Error: ', err);
-//     }
-// );
+module.exports = discoverShop;
