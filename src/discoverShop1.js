@@ -1,53 +1,19 @@
-const config = require('./config.js');
-const YaaS = require('./yaas_api/yaas.js');
+// use require to load our credentials from yaas-credentials.json
+var config = require('./config.js');
 
 // we don't need any scopes here
 var scopes = "";
-var yaas = new YaaS();
 
-function discoverShop(product){
-	yaas.init(config.CLIENT_ID, config.CLIENT_SECRET, scopes, config.PRODUCT_ID);
-	yaas.setLanguage('kr');
-
-	return yaas.category.getCategory()
-		.then(results =. {
-			if(results.length === 0){
-				return [{
-					type: 'quickReplies',
-					content: {
-						title: 'Sorry, but I could not find any results for your request :('
-						buttons: [{ title: 'Start over', value: 'Start over'}],
-					},
-				}];
-			}
-
-			const cards = results.slice(0,10).map(product => ({
-				name: product.name,
-				
-			})
-
-			)
-		}
-
-	)
-}
-
-
-result2 = yaas.category.getCategory()
-	.then(response => {
-		for(var key in  response.body[0].assignments){
-			id = response.body[0].assignments[key].ref.id
-			result = yaas.productdetials.getProductdetailsId(id)
-				.then(res => console.log(res))
-				.catch(errorResponse => console.log(errorResponse));
-		}
-	}).catch(errorResponse => console.log(errorResponse));
+// requre our sdk
+var YaaS = require('./yaas_api/yaas.js');
 
 // create a new instance
-
+var yaas = new YaaS();
 
 // and fill it with our config and scopes
+yaas.init(config.CLIENT_ID, config.CLIENT_SECRET, scopes, config.PRODUCT_ID);
 
+yaas.setLanguage('kr');
 // now we can build an object that includes query parameter
 // we put the sku or product number of our product here
 //  in the end, this will be reformatted to a string included in the url
@@ -73,7 +39,15 @@ result = yaas.productdetials.getProductdetails()
 */
 
 
-
+result2 = yaas.category.getCategory()
+	.then(response => {
+		for(var key in  response.body[0].assignments){
+			id = response.body[0].assignments[key].ref.id
+			result = yaas.productdetials.getProductdetailsId(id)
+				.then(res => console.log(res))
+				.catch(errorResponse => console.log(errorResponse));
+		}
+	}).catch(errorResponse => console.log(errorResponse));
 
 //product = result.body;
 //price = result.body;
