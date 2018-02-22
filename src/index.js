@@ -2,10 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('./config.js');
 const discoverShop = require('./discoverShop.js');
+var path = require('path');
 
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/errors', (req,res) => {
 	console.error(req.body);
@@ -16,9 +19,6 @@ app.post('/discover-products', (req, res) => {
 	console.log('[POST] /discover-products');
 	const memory = req.body.conversation.memory;
 	const products = memory.product.value;
-	console.log('###');
-	console.log(products);
-	console.log('###');
 
 	return discoverShop(products)
 		.then((carouselle) => res.json({
