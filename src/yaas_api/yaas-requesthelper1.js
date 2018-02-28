@@ -8,14 +8,14 @@ function preparePath (path, params) {
     return path + (queryParamString.length > 0 ? '?' + queryParamString : '');
 };
 
-var RequestHelper = function(hybrisSessionId, theClientId, theClientSecret, theScope, theProjectId, overrideApiUrl) {
+var RequestHelper = function(theClientId, theClientSecret, theScope, theProjectId, overrideApiUrl) {
     /* Constants */
     this.yaasHost = (overrideApiUrl) ? overrideApiUrl : 'api.yaas.io';
     this.oauthTokenPath = '/hybris/oauth2/v1/token';
     /* Variables */
+    //this.hybrisSessionId = hybrisSessionId;
     this.clientId = theClientId;
     this.clientSecret= theClientSecret;
-    this.hybrisSessionId = hybrisSessionId;
     this.scope = theScope;
     this.projectId = theProjectId;
     this.language = undefined;
@@ -35,9 +35,9 @@ var RequestHelper = function(hybrisSessionId, theClientId, theClientSecret, theS
             };
             var body = {
                 'grant_type' : 'client_credentials',
-                'sessionValidated': true,
+                //'sessionValidated': true,
                 'scope' : this.scope,
-                'hybris-session-id' : this.hybrisSessionId,
+                //'hybris-session-id' : this.hybrisSessionId,
                 'client_id' : this.clientId,
                 'client_secret' : this.clientSecret
             };

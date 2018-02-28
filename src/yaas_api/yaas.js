@@ -5,15 +5,16 @@ var RequestHelper = require('./yaas-requesthelper.js');
 var ProductService = require('./yaas-product.js');
 var ProductDetails = require('./yaas-productdetails.js');
 var Category = require('./yaas-category.js');
+var CartService = require('./yaas-cart.js');
 
 var language = undefined;
 
 var Yaas = function() {
-    this.init = function(theClientId, theClientSecret, theScope, theProjectId, yaasExtensions, overrideApiUrl) {
-        this.requestHelper = new RequestHelper(theClientId, theClientSecret, theScope, theProjectId, overrideApiUrl);
+    this.init = function(hybrisSessionId, theClientId, theClientSecret, theScope, theProjectId, yaasExtensions, overrideApiUrl) {
+        this.requestHelper = new RequestHelper(hybrisSessionId, theClientId, theClientSecret, theScope, theProjectId, overrideApiUrl);
         this.requestHelper.setDebug(this.debugCallback);
         this.requestHelper.setLanguage(language);
-//        this.cart = new CartService(this.requestHelper);
+        this.cart = new CartService(this.requestHelper);
         this.product = new ProductService(this.requestHelper);
         this.productdetials = new ProductDetails(this.requestHelper);
         this.category = new Category(this.requestHelper);

@@ -7,7 +7,7 @@ var yaas = new YaaS();
 
 
 
-function discoverShop(products){
+function discoverOrder(){
 
 	var finalres = new Array();
 	// YaaS 초기화 및 언어 설정
@@ -102,4 +102,4 @@ function discoverShop(products){
 	});
 }
 
-module.exports = discoverShop;
+module.exports = discoverOrder;
