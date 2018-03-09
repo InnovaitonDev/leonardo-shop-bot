@@ -1,4 +1,4 @@
-# Project Title
+# Leonardo Shop Bot
 
 [![Build Status](https://img.shields.io/travis/InnovaitonDev/leonardo-shop-bot.svg?style=flat-square)](https://travis-ci.org/InnovaitonDev/PHP-DI)
 [![Coverage Status](https://img.shields.io/coveralls/InnovaitonDev/master.svg?style=flat-square)](https://coveralls.io/r/InnovaitonDev/PHP-DI?branch=master)
